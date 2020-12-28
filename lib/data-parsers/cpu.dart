@@ -60,7 +60,7 @@ class CoreInfo {
   final int clflushSize;
   final int cacheAlignment;
   final String addressSizes;
-  final String power;
+  final String powerManagement;
   final double usage;
 
   CoreInfo({
@@ -90,7 +90,7 @@ class CoreInfo {
     this.clflushSize,
     this.cacheAlignment,
     this.addressSizes,
-    this.power,
+    this.powerManagement,
     this.usage,
   });
 }
@@ -108,7 +108,7 @@ class CPUInfo {
   final List<String> flags;
   final List<String> bugs;
   final double bogomips;
-  final String power;
+  final String powerManagement;
   final double usage;
 
   CPUInfo({
@@ -123,7 +123,7 @@ class CPUInfo {
     flags = processors[0].flags,
     bugs = processors[0].bugs,
     bogomips = processors[0].bogomips,
-    power = processors[0].power,
+    powerManagement = processors[0].powerManagement,
     cores = processors[0].cpuCores,
     threads = processors[0].siblings,
     cpuMHz = processors.fold(0, (max, processor) => processor.cpuMHz > max? processor.cpuMHz: max);
@@ -245,7 +245,7 @@ class CPUInfo {
           clflushSize: int.parse(coreInfoMap['clflush size']),
           cacheAlignment: int.parse(coreInfoMap['cache_alignment']),
           addressSizes: coreInfoMap['address sizes'],
-          power: coreInfoMap['power'],
+          powerManagement: coreInfoMap['power management'],
           usage: coresUsage[i]
         ));
       }

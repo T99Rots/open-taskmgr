@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:taskmgr/data-parsers/cpu.dart';
 import 'package:taskmgr/layout.dart';
+import 'package:taskmgr/models/performance/performance.dart';
 import 'package:taskmgr/pages/unknown.dart';
 
 void main() {
@@ -14,10 +14,7 @@ class TaskManager extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider.value(
-          value: CPUInfo.createStream(),
-          // initialData: ,
-        )
+        ChangeNotifierProvider(create: (_) => PerformanceModel(historyLength: 60, updateInterval: Duration(seconds: 1))..start())
       ],
       child: MaterialApp(
         title: 'Task Manager',
