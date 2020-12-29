@@ -18,20 +18,12 @@ class TaskManager extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Task Manager',
-        builder: (context, child) => Layout(
-          child: child,
-        ),
         theme: ThemeData(
           primaryColor: Colors.blue,
           accentColor: Colors.blue,
           colorScheme: ColorScheme.dark(),
         ),
-        onUnknownRoute: (RouteSettings settings) {
-          return MaterialPageRoute(
-            builder: (BuildContext context) => UnknownPage(),
-          );
-        },
-        home: Layout(),
+        home: Layout()
       ),
     );
   }

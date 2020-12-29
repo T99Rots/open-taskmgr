@@ -86,3 +86,69 @@ class StyledLineChart extends StatelessWidget {
     return list;
   }
 }
+
+
+class StackedBarChartEntry {
+  final int value;
+  final Color color;
+  final String name;
+
+  StackedBarChartEntry({
+    this.value,
+    this.color,
+    this.name,
+  });
+}
+class StackedBarChart extends StatelessWidget {
+  final List<StackedBarChartEntry> data;
+  final double height;
+
+  const StackedBarChart({
+    Key key,
+    this.data,
+    this.height = 60,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.purple, width: 2)
+      ),
+      height: height,
+      child: Row(
+        children: data.asMap().entries.map((entry) => Expanded(
+          flex: entry.value.value,
+          child: Tooltip(
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            decoration: BoxDecoration(
+              color: Colors.grey[800],
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  offset: Offset(0.0, 1.0), //(x,y)
+                  blurRadius: 6.0,
+                ),
+              ],
+            ),
+            textStyle: TextStyle(
+              fontSize: 16,
+              color: Colors.white
+            ),
+            verticalOffset: -20,
+            message: entry.value.name,
+            child: Container(
+              decoration: BoxDecoration(
+                border: entry.key == data.length - 1? null: Border(
+                  right: BorderSide(color: Colors.purple.withOpacity(0.5), width: 2)
+                ),
+                color: entry.value.color
+              ),
+            )
+          )
+        )).toList()
+      ),
+    );
+  }
+}

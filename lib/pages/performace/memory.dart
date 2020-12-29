@@ -13,7 +13,11 @@ class MemoryTab extends StatelessWidget {
     final model = context.watch<PerformanceModel>();
     final memory = model.memory;
 
-    final lastEntry = memory.usageHistory.last;
+    final MemoryInfoEntry lastEntry = memory.usageHistory.last;
+
+    final int free = lastEntry.memFree;
+    final int used = memory.totalMemory - lastEntry.memAvailable;
+    final int standby = lastEntry.memAvailable - lastEntry.memFree;
 
     double getMemoryUsagePercentage(MemoryInfoEntry entry) {
       return ((memory.totalMemory - entry.memAvailable) / memory.totalMemory)*100;
@@ -36,7 +40,7 @@ class MemoryTab extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'CPU',
+                    'Memory',
                     style: TextStyle(
                       fontSize: 24
                     ),
@@ -63,7 +67,7 @@ class MemoryTab extends StatelessWidget {
               widthFactor: 1,
               heightFactor: 1,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.only(top: 5),
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.purple, width: 2)
@@ -78,6 +82,44 @@ class MemoryTab extends StatelessWidget {
               ),
             ),
           )),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10, top: 5),
+            child: Text('60 seconds'),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5),
+            child: Text('Memory composition'),
+          ),
+          StackedBarChart(
+            data: [
+              StackedBarChartEntry(
+                color: Colors.purple.withOpacity(0.3),
+                value: used,
+                name: 
+                  'In use (${used ~/ 1024}MB)\n\n'
+                  +'Memory used by processes, drivers or\n'
+                  +'the operating system',
+              ),
+              StackedBarChartEntry(
+                color: Colors.purple.withOpacity(0.05),
+                value: standby,
+                name: 
+                  'Standby (${standby ~/ 1024}MB)\n\n'
+                  +'Memory that contains cached data\n'
+                  +'and code that is not actively in use',
+              ),
+              StackedBarChartEntry(
+                color: Colors.transparent,
+                value: free,
+                name: 
+                  'Free (${free ~/ 1024}MB)\n\n'
+                  +'Memory that is not in use\n'
+                  +'and will be used first when\n'
+                  +'processes, drivers or the\n'
+                  +'operating system need memory',
+              )
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Container(

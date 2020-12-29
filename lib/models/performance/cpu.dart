@@ -17,6 +17,7 @@ bool parseBool (String str) {
 class CPU {
   final File _cpuinfoFile = new File('/proc/cpuinfo');
   final File _statFile = new File('/proc/stat');
+  final File _uptimeFile = new File('/proc/uptime');
 
   final List<CPUThread> threads = [];
   final List<CPUUsageEntry> usageHistory = [];
@@ -33,17 +34,23 @@ class CPU {
   double bogomips;
   String powerManagement;
   String tlbSize;
+  double uptime;
 
   CPU({this.historyLength});
   
   Future update () async {
     final List<String> results = await Future.wait([
       _cpuinfoFile.readAsString(),
-      _statFile.readAsString()
+      _statFile.readAsString(),
+      _uptimeFile.readAsString(),
     ]);
 
     final String cpuInfo = results[0];
     final String stats = results[1];
+    final String uptimeString = results[2];
+
+    final uptimeParts = uptimeString.split(RegExp(r'\s+'));
+    uptime = double.parse(uptimeParts[0]);
 
     // parsing the cpu info list in to a map
 

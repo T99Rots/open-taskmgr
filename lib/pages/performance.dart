@@ -49,7 +49,7 @@ class _PerformancePageState extends State<PerformancePage> {
       child: Row(
         children: [
           Container(
-            width: 340,
+            width: 280,
             child: Column(
               children: [
                 Container(

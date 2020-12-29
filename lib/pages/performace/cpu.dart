@@ -43,6 +43,13 @@ Map<int, CoreLayout> coreCountGraphLayoutMap = {
   130: CoreLayout(10, 13),
 };
 
+String formatDuration(Duration duration) {
+  String twoDigits(int n) => n.toString().padLeft(2, "0");
+  String twoDigitHours = twoDigits(duration.inHours.remainder(24));
+  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+  String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+  return "${duration.inDays}:$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds";
+}
 class CoreLayout {
   final int x;
   final int y;
@@ -123,7 +130,7 @@ class CPUTab extends StatelessWidget {
               widthFactor: 1,
               heightFactor: 1,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.only(bottom: 10, top: 5),
                 child: model.showThreadGraphs? Builder(builder: (context) {
                   final n = cpu.threads.length;
                   final layout = CoreLayout.fromCount(n);
@@ -228,7 +235,7 @@ class CPUTab extends StatelessWidget {
                       ),
                       TableDatePoint(
                         title: 'Up time',
-                        data: '183:00:00:00',
+                        data: formatDuration(Duration(seconds: cpu.uptime.toInt())),
                       ),
                     ],
                   ),
